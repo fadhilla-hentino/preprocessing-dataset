@@ -11,14 +11,14 @@ import (
 func readCsvFile(filePath string) [][]string {
 	file, err := os.Open(filePath)
 	if err != nil {
-		log.Fatal("Unable to read input file "+filePath, err)
+		log.Fatal("Unable to read input file " + filePath, err)
 	}
 	defer file.Close()
 
 	csvReader := csv.NewReader(file)
 	records, err := csvReader.ReadAll()
 	if err != nil {
-		log.Fatal("Unable to parse file as CSV for "+filePath, err)
+		log.Fatal("Unable to parse file as CSV for " + filePath, err)
 	}
 
 	return records
@@ -38,14 +38,14 @@ func writeCsvFile(records [][]string, destination string, isClean bool) {
 		for i := 0; i < len(records); i++ {
 			record := records[i][3]
 			if err := writer.Write([]string{record}); err != nil {
-				log.Fatal("Unable to create CSV file at index : "+string(rune(i)), err)
+				log.Fatal("Unable to create CSV file at index : "+ string(rune(i)) , err)
 			}
 		}
 	} else {
 		for i := 0; i < len(records); i++ {
 			record := records[i]
 			if err := writer.Write(record); err != nil {
-				log.Fatal("Unable to create CSV file at index : "+string(rune(i)), err)
+				log.Fatal("Unable to create CSV file at index : "+ string(rune(i)) , err)
 			}
 		}
 	}
@@ -77,7 +77,7 @@ func writeCleanData(records [][]string, destTraining, destTesting string, done c
 }
 
 const (
-	basePath = "./"
+	basePath = "/home/fadhil/documents/Fadhil/Binus/THESIS _ JOURNAL/BIA/Dataset/"
 )
 
 func main() {
@@ -91,10 +91,10 @@ func main() {
 	records := readCsvFile(basePath + "chat_dataset_3M.csv")
 
 	// split dataset into training and testing
-	go splitDataset(records, basePath+"training_dataset_2M.csv", basePath+"testing_dataset_1M.csv", splitChan)
+	go splitDataset(records, basePath + "training_dataset_2M.csv", basePath + "testing_dataset_1M.csv", splitChan)
 
 	// write clean training and testing dataset
-	go writeCleanData(records, basePath+"clean_training_dataset_2M.csv", basePath+"clean_testing_dataset_1M.csv", cleanChan)
+	go writeCleanData(records, basePath + "clean_training_dataset_2M.csv", basePath + "clean_testing_dataset_1M.csv", cleanChan)
 
 	// waiting all process to finish
 	<-splitChan
